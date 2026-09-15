@@ -2,27 +2,76 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的笔记</title>
   <style>
-    body {
-      font-family: system-ui, sans-serif;
-      padding: 20px;
-      background: #f5f5f7;
-      color: #222;
+    body { 
+      font-family: system-ui, -apple-system, sans-serif; 
+      padding: 20px; 
+      background: #f5f5f7; 
+      color: #222; 
+      line-height: 1.6; 
     }
-    a {
-      display: inline-block;
-      margin-top: 20px;
+    .container { max-width: 600px; margin: 0 auto; }
+    h1 { font-size: 24px; margin-bottom: 8px; }
+    .subtitle { color: #666; margin-bottom: 20px; font-size: 14px; }
+    
+    /* 卡片样式 */
+    .note-card { 
+      background: #ffffff; 
+      padding: 16px; 
+      border-radius: 12px; 
+      margin-bottom: 12px; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06); 
+    }
+    .note-card h2 { 
+      font-size: 18px; 
+      margin-top: 0; 
+      margin-bottom: 8px; 
       color: #007aff;
-      text-decoration: none;
+    }
+    .note-card p { 
+      margin: 0; 
+      color: #444; 
+      font-size: 15px; 
+    }
+    
+    /* 返回链接 */
+    .back-link { 
+      display: inline-block; 
+      margin-top: 20px; 
+      color: #007aff; 
+      text-decoration: none; 
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <h1>我的笔记</h1>
-  <p>这里以后放笔记功能。</p>
-  
-  <a href="../index.html">← 返回首页</a>
+  <div class="container">
+    <h1>我的笔记</h1>
+    <p class="subtitle">这里以后放我的学习笔记和生活小记。</p>
+    
+    <!-- 第一条笔记 -->
+    <div class="note-card">
+      <h2>📝 第一条笔记</h2>
+      <p>今天学会了怎么在 GitHub 上修改代码，保存后等 1-2 分钟，手机刷新就能看到变化，好神奇！</p>
+    </div>
+
+    <!-- 第二条笔记 -->
+    <div class="note-card">
+      <h2>📚 学习计划</h2>
+      <p>1. 掌握 HTML 基础标签（标题、段落、链接、图片）。<br>
+         2. 学会给网页加一点样式（颜色、圆角、阴影）。<br>
+         3. 把剩下的工具、记账、收藏页面搭好。</p>
+    </div>
+
+    <!-- 第三条笔记 -->
+    <div class="note-card">
+      <h2>💡 提醒自己</h2>
+      <p>因为仓库是公开的，所以这里只写不怕别人看的内容，私密日记还是记在手机备忘录里。</p>
+    </div>
+
+    <a class="back-link" href="../index.html">← 返回首页</a>
+  </div>
 </body>
 </html>
