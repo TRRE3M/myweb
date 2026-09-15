@@ -10,18 +10,25 @@
     h1 { font-size: 24px; margin-bottom: 8px; }
     .subtitle { color: #666; margin-bottom: 20px; font-size: 14px; }
     
-    /* 计算器卡片样式 */
+    /* 计算器卡片 */
     .calc-card { background: #fff; padding: 20px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); margin-bottom: 20px; }
     .calc-screen { background: #1a1a1a; color: #fff; font-size: 32px; text-align: right; padding: 15px 20px; border-radius: 10px; margin-bottom: 15px; overflow: hidden; min-height: 70px; word-wrap: break-word; }
+    
+    /* 4列网格布局 */
     .calc-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
     .calc-btn { border: none; border-radius: 10px; font-size: 20px; padding: 15px 0; cursor: pointer; background: #f0f0f5; transition: 0.1s; font-weight: 500; }
     .calc-btn:active { background: #d0d0d5; transform: scale(0.95); }
+    
+    /* 颜色 */
     .calc-btn.operator { background: #007aff; color: #fff; }
     .calc-btn.operator:active { background: #005bb5; }
-    .calc-btn.equal { background: #34c759; color: #fff; grid-column: span 2; }
+    .calc-btn.equal { background: #34c759; color: #fff; }
     .calc-btn.equal:active { background: #28a745; }
-    .calc-btn.clear { background: #ff3b30; color: #fff; grid-column: span 2; }
+    .calc-btn.clear { background: #ff3b30; color: #fff; }
     .calc-btn.clear:active { background: #d32f2f; }
+
+    /* 跨列设置 */
+    .span-2 { grid-column: span 2; }
 
     .back-link { display: inline-block; margin-top: 20px; color: #007aff; text-decoration: none; font-weight: bold; }
   </style>
@@ -31,27 +38,35 @@
     <h1>我的工具</h1>
     <p class="subtitle">这里放常用的小工具，第一个先来个计算器。</p>
     
-    <!-- 计算器 -->
     <div class="calc-card">
       <div class="calc-screen" id="screen">0</div>
       <div class="calc-buttons">
-        <button class="calc-btn clear" onclick="clearScreen()">AC</button>
+        <!-- 第一行：AC占两格，÷ 和 × 各占一格 -->
+        <button class="calc-btn clear span-2" onclick="clearScreen()">AC</button>
         <button class="calc-btn operator" onclick="append('/')">÷</button>
+        <button class="calc-btn operator" onclick="append('*')">×</button>
+
+        <!-- 第二行：7 8 9 - -->
         <button class="calc-btn" onclick="append('7')">7</button>
         <button class="calc-btn" onclick="append('8')">8</button>
         <button class="calc-btn" onclick="append('9')">9</button>
-        <button class="calc-btn operator" onclick="append('*')">×</button>
+        <button class="calc-btn operator" onclick="append('-')">-</button>
+
+        <!-- 第三行：4 5 6 + -->
         <button class="calc-btn" onclick="append('4')">4</button>
         <button class="calc-btn" onclick="append('5')">5</button>
         <button class="calc-btn" onclick="append('6')">6</button>
-        <button class="calc-btn operator" onclick="append('-')">-</button>
+        <button class="calc-btn operator" onclick="append('+')">+</button>
+
+        <!-- 第四行：1 2 3 . -->
         <button class="calc-btn" onclick="append('1')">1</button>
         <button class="calc-btn" onclick="append('2')">2</button>
         <button class="calc-btn" onclick="append('3')">3</button>
-        <button class="calc-btn operator" onclick="append('+')">+</button>
-        <button class="calc-btn" onclick="append('0')">0</button>
         <button class="calc-btn" onclick="append('.')">.</button>
-        <button class="calc-btn equal" onclick="calculate()">=</button>
+
+        <!-- 第五行：0占两格，=占两格 -->
+        <button class="calc-btn span-2" onclick="append('0')">0</button>
+        <button class="calc-btn equal span-2" onclick="calculate()">=</button>
       </div>
     </div>
 
@@ -59,7 +74,6 @@
   </div>
 
   <script>
-    // JS 部分：计算器的逻辑
     const screen = document.getElementById("screen");
     let currentInput = "0";
 
@@ -83,7 +97,6 @@
 
     function calculate() {
       try {
-        // 注意：这里使用了 eval，仅用于自己用的简单工具，不要处理敏感数据
         let result = eval(currentInput);
         if (result === undefined || result === null) result = "";
         currentInput = result.toString();
