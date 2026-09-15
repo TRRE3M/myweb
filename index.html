@@ -2,37 +2,84 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>我的网页</title>
   <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: system-ui, sans-serif;
-      padding: 20px;
-      background: #f5f5f7;
-      color: #222;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+      color: #333;
     }
-    h1 {
-      font-size: 24px;
-    }
-    a {
-      display: block;
-      padding: 16px;
-      margin: 10px 0;
-      background: #fff;
-      border-radius: 12px;
+    .container { width: 100%; max-width: 600px; }
+    .header { text-align: center; margin-bottom: 32px; }
+    .header h1 { font-size: 28px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px; }
+    .header p { color: #666; font-size: 15px; }
+    
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      padding: 24px 16px;
       text-decoration: none;
-      color: #222;
-      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+      color: #333;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
+    .card:hover, .card:active {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      background: #ffffff;
+    }
+    .card .icon { font-size: 36px; margin-bottom: 12px; display: block; }
+    .card h2 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+    .card p { font-size: 12px; color: #888; }
   </style>
 </head>
 <body>
-  <h1>我的网页</h1>
-  <p>选择分类：</p>
+  <div class="container">
+    <div class="header">
+      <h1>我的个人小站</h1>
+      <p>随便逛逛，随便点点</p>
+    </div>
 
-  <a href="./notes/">笔记</a>
-  <a href="./tools/">工具</a>
-  <a href="./money/">部落冲突</a>
-  <a href="./favorites/">收藏</a>
+    <div class="grid">
+      <!-- 保留了原有的笔记和工具 -->
+      <a class="card" href="./notes/">
+        <span class="icon">📝</span>
+        <h2>笔记</h2>
+        <p>随手记东西</p>
+      </a>
+
+      <a class="card" href="./tools/">
+        <span class="icon">🛠️</span>
+        <h2>工具</h2>
+        <p>实用小玩意</p>
+      </a>
+
+      <!-- 替换成了部落冲突和电脑软件 -->
+      <a class="card" href="./coc/">
+        <span class="icon">🏰</span>
+        <h2>部落冲突</h2>
+        <p>游戏攻略与记录</p>
+      </a>
+
+      <a class="card" href="./software/">
+        <span class="icon">💻</span>
+        <h2>电脑软件</h2>
+        <p>常用软件收藏</p>
+      </a>
+    </div>
+  </div>
 </body>
 </html>
