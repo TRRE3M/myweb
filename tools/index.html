@@ -10,7 +10,6 @@
     h1 { font-size: 24px; margin-bottom: 8px; }
     .subtitle { color: #666; margin-bottom: 20px; font-size: 14px; }
     
-    /* 计算器卡片 */
     .calc-card { background: #fff; padding: 20px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); margin-bottom: 20px; }
     .calc-screen { background: #1a1a1a; color: #fff; font-size: 32px; text-align: right; padding: 15px 20px; border-radius: 10px; margin-bottom: 15px; overflow: hidden; min-height: 70px; word-wrap: break-word; }
     
@@ -27,7 +26,7 @@
     .calc-btn.clear { background: #ff3b30; color: #fff; }
     .calc-btn.clear:active { background: #d32f2f; }
 
-    /* 跨列设置 */
+    /* 跨两格（用于等号） */
     .span-2 { grid-column: span 2; }
 
     .back-link { display: inline-block; margin-top: 20px; color: #007aff; text-decoration: none; font-weight: bold; }
@@ -41,31 +40,33 @@
     <div class="calc-card">
       <div class="calc-screen" id="screen">0</div>
       <div class="calc-buttons">
-        <!-- 第一行：AC占两格，÷ 和 × 各占一格 -->
-        <button class="calc-btn clear span-2" onclick="clearScreen()">AC</button>
+        <!-- 第一行：AC 和 删除键，空一格，最右侧是除号 -->
+        <button class="calc-btn clear" onclick="clearScreen()">AC</button>
+        <button class="calc-btn" onclick="backspace()">⌫</button>
+        <button class="calc-btn" style="visibility: hidden;"></button>
         <button class="calc-btn operator" onclick="append('/')">÷</button>
-        <button class="calc-btn operator" onclick="append('*')">×</button>
 
-        <!-- 第二行：7 8 9 - -->
+        <!-- 第二行：7 8 9 × -->
         <button class="calc-btn" onclick="append('7')">7</button>
         <button class="calc-btn" onclick="append('8')">8</button>
         <button class="calc-btn" onclick="append('9')">9</button>
-        <button class="calc-btn operator" onclick="append('-')">-</button>
+        <button class="calc-btn operator" onclick="append('*')">×</button>
 
-        <!-- 第三行：4 5 6 + -->
+        <!-- 第三行：4 5 6 - -->
         <button class="calc-btn" onclick="append('4')">4</button>
         <button class="calc-btn" onclick="append('5')">5</button>
         <button class="calc-btn" onclick="append('6')">6</button>
-        <button class="calc-btn operator" onclick="append('+')">+</button>
+        <button class="calc-btn operator" onclick="append('-')">-</button>
 
-        <!-- 第四行：1 2 3 . -->
+        <!-- 第四行：1 2 3 + -->
         <button class="calc-btn" onclick="append('1')">1</button>
         <button class="calc-btn" onclick="append('2')">2</button>
         <button class="calc-btn" onclick="append('3')">3</button>
-        <button class="calc-btn" onclick="append('.')">.</button>
+        <button class="calc-btn operator" onclick="append('+')">+</button>
 
-        <!-- 第五行：0占两格，=占两格 -->
-        <button class="calc-btn span-2" onclick="append('0')">0</button>
+        <!-- 第五行：0 和 点号，最右侧是等号（占两格） -->
+        <button class="calc-btn" onclick="append('0')">0</button>
+        <button class="calc-btn" onclick="append('.')">.</button>
         <button class="calc-btn equal span-2" onclick="calculate()">=</button>
       </div>
     </div>
@@ -86,6 +87,16 @@
         currentInput = val;
       } else {
         currentInput += val;
+      }
+      updateScreen();
+    }
+
+    // 新增：删除一个字符的逻辑
+    function backspace() {
+      if (currentInput.length > 1) {
+        currentInput = currentInput.slice(0, -1);
+      } else {
+        currentInput = "0";
       }
       updateScreen();
     }
