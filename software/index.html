@@ -5,46 +5,433 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>电脑软件收录</title>
   <style>
-    body { font-family: system-ui, sans-serif; padding: 20px; background: #f5f5f7; color: #222; line-height: 1.6; }
-    .container { max-width: 600px; margin: 0 auto; }
-    h1 { font-size: 24px; margin-bottom: 8px; }
-    .subtitle { color: #666; margin-bottom: 20px; font-size: 14px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f7; color: #1d1d1f; line-height: 1.6; padding: 30px 20px; }
+    .container { max-width: 800px; margin: 0 auto; }
     
-    .app-card { background: #fff; padding: 16px; border-radius: 12px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-    .app-card h2 { font-size: 18px; margin-top: 0; margin-bottom: 8px; color: #007aff; }
-    .app-card p { margin: 0 0 8px 0; color: #444; font-size: 14px; }
-    .app-card .usage { font-size: 13px; color: #666; background: #f9f9f9; padding: 8px; border-radius: 8px; }
+    .header { text-align: center; margin-bottom: 30px; }
+    .header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
+    .header p { color: #86868b; font-size: 15px; }
+
+    /* 分类标题 */
+    .category-title {
+      font-size: 18px; font-weight: 600; margin: 30px 0 15px 0; padding-bottom: 8px;
+      border-bottom: 2px solid #e5e5ea; display: flex; align-items: center; gap: 8px;
+    }
+
+    /* 软件列表（网格布局，自适应屏幕） */
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    /* 单个软件卡片（紧凑型） */
+    .app-card {
+      background: #ffffff; border-radius: 16px; padding: 16px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      display: flex; flex-direction: column; gap: 10px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .app-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); }
+
+    /* 顶部行：图标 + 名称 + 类别标签 */
+    .app-header { display: flex; align-items: center; gap: 12px; }
+    .app-icon {
+      width: 48px; height: 48px; flex-shrink: 0;
+      background: #f0f0f5; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; /* 防止图片超出圆角 */
+    }
+    /* 图片统一大小 */
+    .app-icon img { width: 32px; height: 32px; object-fit: contain; }
     
-    .back-link { display: inline-block; margin-top: 20px; color: #007aff; text-decoration: none; font-weight: bold; }
+    .app-info { flex: 1; }
+    .app-info h2 { font-size: 16px; font-weight: 600; margin-bottom: 2px; }
+    .app-info .tag { font-size: 11px; color: #86868b; background: #f0f0f5; padding: 1px 6px; border-radius: 4px; display: inline-block; }
+
+    /* 简介 */
+    .app-desc { font-size: 13px; color: #515154; flex-grow: 1; }
+
+    /* 链接与说明 */
+    .app-links { display: flex; gap: 8px; margin-top: 4px; }
+    .app-links a {
+      font-size: 12px; padding: 6px 12px; border-radius: 8px; text-decoration: none;
+      background: #0071e3; color: #fff; font-weight: 500; transition: 0.2s;
+    }
+    .app-links a:hover { background: #0077ed; }
+    .app-links a.secondary { background: #f0f0f5; color: #1d1d1f; }
+    .app-links a.secondary:hover { background: #e5e5ea; }
+
+    /* 详细使用说明区域（初始折叠，点击展开，如果不想折叠可以直接删掉） */
+    details { font-size: 13px; color: #515154; margin-top: 8px; }
+    details summary { cursor: pointer; color: #0071e3; font-weight: 500; outline: none; }
+    details p { margin-top: 6px; background: #f9f9fb; padding: 10px; border-radius: 8px; border-left: 3px solid #0071e3; }
+
+    .back-link { display: inline-block; margin-top: 30px; color: #0071e3; text-decoration: none; font-weight: 500; font-size: 15px; }
+    .back-link:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
+
   <div class="container">
-    <h1>常用电脑软件</h1>
-    <p class="subtitle">收录常用软件、下载地址和使用说明</p>
-    
-    <!-- 这是一个软件卡片示例，以后你可以复制这个结构，换成其他软件 -->
-    <div class="app-card">
-      <h2>💻 软件名称（例如：Everything）</h2>
-      <p>官方下载地址：<a href="https://www.voidtools.com/" target="_blank">点击前往官网</a></p>
-      <div class="usage">
-        <strong>使用方法：</strong><br>
-        1. 下载并安装。<br>
-        2. 打开后直接输入文件名，瞬间就能搜到电脑里的文件，比 Windows 自带搜索快很多。
+    <div class="header">
+      <h1>常用电脑软件</h1>
+      <p>收录我平时常用的软件、官网与使用说明</p>
+    </div>
+
+    <!-- ================= 类别一：系统工具 ================= -->
+    <div class="category-title">🛠️ 系统工具</div>
+    <div class="app-grid">
+
+      <!-- 模板示例：Everything -->
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon"><img src="./icons/everything.png" alt="Everything"></div>
+          <div class="app-info">
+            <h2>Everything</h2>
+            <span class="tag">文件搜索</span>
+          </div>
+        </div>
+        <p class="app-desc">Windows 上公认最快的本地文件搜索工具。</p>
+        <div class="app-links">
+          <a href="https://www.voidtools.com/" target="_blank">官网下载</a>
+          <a href="#" class="secondary" onclick="alert('以后在这里写使用说明')">使用说明</a>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon"><img src="./icons/chrome.svg" alt="Chrome"></div>
+          <div class="app-info"><h2>Chrome</h2><span class="tag">浏览器</span></div>
+        </div>
+        <p class="app-desc">Google 出品的全球最流行浏览器，插件生态丰富。</p>
+        <div class="app-links">
+          <a href="https://www.google.com/chrome/" target="_blank">官网下载</a>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon"><img src="./icons/geekuninstaller.png" alt="Geek Uninstaller"></div>
+          <div class="app-info"><h2>Geek Uninstaller</h2><span class="tag">卸载工具</span></div>
+        </div>
+        <p class="app-desc">轻量高效的软件卸载工具，能强力清除卸载残留。</p>
+        <div class="app-links">
+          <a href="https://geekuninstaller.com/" target="_blank">官网下载</a>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon"><img src="./icons/notepadpp.png" alt="Notepad++"></div>
+          <div class="app-info"><h2>Notepad++</h2><span class="tag">文本编辑</span></div>
+        </div>
+        <p class="app-desc">Windows 上最好用的免费代码和文本编辑器之一。</p>
+        <div class="app-links">
+          <a href="https://notepad-plus-plus.org/" target="_blank">官网下载</a>
+        </div>
+      </div>
+      
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon"><img src="./icons/marktext.png" alt="MarkText"></div>
+          <div class="app-info"><h2>MarkText</h2><span class="tag">Markdown</span></div>
+        </div>
+        <p class="app-desc">简洁优雅的实时预览 Markdown 编辑器。</p>
+        <div class="app-links">
+          <a href="https://www.marktext.cc/" target="_blank">官网下载</a>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon"><img src="./icons/7zip.svg" alt="7-Zip"></div>
+          <div class="app-info"><h2>7-Zip</h2><span class="tag">压缩解压</span></div>
+        </div>
+        <p class="app-desc">开源免费的高压缩率解压软件，装机必备。</p>
+        <div class="app-links">
+          <a href="https://www.7-zip.org/" target="_blank">官网下载</a>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon"><img src="./icons/localsend.png" alt="LocalSend"></div>
+          <div class="app-info"><h2>LocalSend</h2><span class="tag">局域网传输</span></div>
+        </div>
+        <p class="app-desc">跨平台局域网文件传输工具，无需联网，极速安全。</p>
+        <div class="app-links">
+          <a href="https://localsend.org/" target="_blank">官网下载</a>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon"><img src="./icons/neatdm.png" alt="Neat Download Manager"></div>
+          <div class="app-info"><h2>Neat Download Manager</h2><span class="tag">下载工具</span></div>
+        </div>
+        <p class="app-desc">轻量级的多线程下载器，替代 IDM 的免费选择。</p>
+        <div class="app-links">
+          <a href="https://www.neatdownloadmanager.com/" target="_blank">官网下载</a>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon"><img src="./icons/pixpin.png" alt="PixPin"></div>
+          <div class="app-info"><h2>PixPin</h2><span class="tag">截图工具</span></div>
+        </div>
+        <p class="app-desc">功能强大的截图贴图工具，支持长截图和 OCR。</p>
+        <div class="app-links">
+          <a href="https://pixpinapp.com/" target="_blank">官网下载</a>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon"><img src="./icons/veracrypt.png" alt="VeraCrypt"></div>
+          <div class="app-info"><h2>VeraCrypt</h2><span class="tag">加密工具</span></div>
+        </div>
+        <p class="app-desc">开源的磁盘加密软件，保护重要私密文件。</p>
+        <div class="app-links">
+          <a href="https://www.veracrypt.fr/" target="_blank">官网下载</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================= 类别二：开发与 AI ================= -->
+    <div class="category-title">💻 开发与 AI</div>
+    <div class="app-grid">
+
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon"><img src="./icons/vscode.svg" alt="VSCode"></div>
+          <div class="app-info"><h2>VSCode</h2><span class="tag">代码编辑器</span></div>
+        </div>
+        <p class="app-desc">微软出品的轻量级但功能强大的代码编辑器。</p>
+        <div class="app-links">
+          <a href="https://code.visualstudio.com/" target="_blank">官网下载</a>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon"><img src="./icons/pycharm.svg" alt="PyCharm"></div>
+          <div class="app-info"><h2>PyCharm</h2><span class="tag">Python IDE</span></div>
+        </div>
+        <p class="app-desc">专业的 Python 集成开发环境。</p>
+        <div class="app-links">
+          <a href="https://www.jetbrains.com/pycharm/" target="_blank">官网下载</a>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon"><img src="./icons/datagrip.svg" alt="DataGrip"></div>
+          <div class="app-info"><h2>DataGrip</h2><span class="tag">数据库工具</span></div>
+        </div>
+        <p class="app-desc">JetBrains 出品的多引擎数据库管理工具。</p>
+        <div class="app-links">
+          <a href="https://www.jetbrains.com/datagrip/" target="_blank">官网下载</a>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon"><img src="./icons/chatgpt.svg" alt="ChatGPT"></div>
+          <div class="app-info"><h2>ChatGPT</h2><span class="tag">AI 对话</span></div>
+        </div>
+        <p class="app-desc">OpenAI 推出的革命性人工智能对话助手。</p>
+        <div class="app-links">
+          <a href="https://chatgpt.com/" target="_blank">官网</a>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon"><img src="./icons/claude.svg" alt="Claude"></div>
+          <div class="app-info"><h2>Claude</h2><span class="tag">AI 对话</span></div>
+        </div>
+        <p class="app-desc">Anthropic 推出的 AI 助手，长文本理解能力出色。</p>
+        <div class="app-links">
+          <a href="https://claude.ai/" target="_blank">官网</a>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon"><img src="./icons/cc-switch.png" alt="CC Switch"></div>
+          <div class="app-info"><h2>CC Switch</h2><span class="tag">AI 辅助</span></div>
+        </div>
+        <p class="app-desc">AI 接口切换/代理辅助工具。（请自行补充确切用途）</p>
+        <div class="app-links">
+          <a href="https://ccswitch.io/" target="_blank">官网</a>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon"><img src="./icons/deepseek.svg" alt="DeepSeek Harness"></div>
+          <div class="app-info"><h2>DeepSeek Harness</h2><span class="tag">AI 工具</span></div>
+        </div>
+        <p class="app-desc">DeepSeek 相关的测试/集成工具。</p>
+        <div class="app-links">
+          <a href="https://www.deepseek.com/" target="_blank">DeepSeek 官网</a>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon"><img src="./icons/git.svg" alt="Git"></div>
+          <div class="app-info"><h2>Git</h2><span class="tag">版本控制</span></div>
+        </div>
+        <p class="app-desc">分布式版本控制系统，管理代码必备。</p>
+        <div class="app-links">
+          <a href="https://git-scm.com/" target="_blank">官网下载</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================= 类别三：网络与代理 ================= -->
+    <div class="category-title">🌐 网络与代理</div>
+    <div class="app-grid">
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon"><img src="./icons/clash-verge.png" alt="Clash Verge Rev"></div>
+          <div class="app-info"><h2>Clash Verge Rev</h2><span class="tag">代理客户端</span></div>
+        </div>
+        <p class="app-desc">基于 Clash 的现代代理客户端，界面美观。</p>
+        <div class="app-links"><a href="https://github.com/clash-verge-rev/clash-verge-rev" target="_blank">GitHub</a></div>
+      </div>
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon"><img src="./icons/flclash.png" alt="FlClash"></div>
+          <div class="app-info"><h2>FlClash</h2><span class="tag">代理客户端</span></div>
+        </div>
+        <p class="app-desc">另一个基于 Clash 的跨平台代理客户端。</p>
+        <div class="app-links"><a href="https://github.com/chen08209/FlClash" target="_blank">GitHub</a></div>
+      </div>
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon"><img src="./icons/v2rayn.png" alt="v2rayN"></div>
+          <div class="app-info"><h2>v2rayN</h2><span class="tag">代理客户端</span></div>
+        </div>
+        <p class="app-desc">Windows 上常用的 V2Ray 代理客户端。</p>
+        <div class="app-links"><a href="https://github.com/2dust/v2rayN" target="_blank">GitHub</a></div>
       </div>
     </div>
 
-    <div class="app-card">
-      <h2>💻 软件名称（例如：PotPlayer）</h2>
-      <p>官方下载地址：<a href="https://potplayer.daum.net/" target="_blank">点击前往官网</a></p>
-      <div class="usage">
-        <strong>使用方法：</strong><br>
-        1. 下载安装。<br>
-        2. 打开后可以直接拖拽视频文件进去播放，支持几乎所有格式。
+    <!-- ================= 类别四：游戏与娱乐 ================= -->
+    <div class="category-title">🎮 游戏与娱乐</div>
+    <div class="app-grid">
+      <div class="app-card">
+        <div class="app-header"><div class="app-icon"><img src="./icons/epic-games.svg" alt="Epic"></div><div class="app-info"><h2>Epic Games</h2><span class="tag">游戏平台</span></div></div>
+        <p class="app-desc">每周免费送游戏的游戏平台。</p>
+        <div class="app-links"><a href="https://store.epicgames.com/" target="_blank">官网</a></div>
+      </div>
+      <div class="app-card">
+        <div class="app-header"><div class="app-icon"><img src="./icons/steam.svg" alt="Steam"></div><div class="app-info"><h2>Steam</h2><span class="tag">游戏平台</span></div></div>
+        <p class="app-desc">全球最大的综合性数字发行平台。</p>
+        <div class="app-links"><a href="https://store.steampowered.com/" target="_blank">官网</a></div>
+      </div>
+      <div class="app-card">
+        <div class="app-header"><div class="app-icon"><img src="./icons/ea.svg" alt="EA"></div><div class="app-info"><h2>EA</h2><span class="tag">游戏平台</span></div></div>
+        <p class="app-desc">EA 官方游戏平台，玩 FIFA、战地等必备。</p>
+        <div class="app-links"><a href="https://www.ea.com/" target="_blank">官网</a></div>
+      </div>
+      <div class="app-card">
+        <div class="app-header"><div class="app-icon"><img src="./icons/legionzone.png" alt="Legion Zone"></div><div class="app-info"><h2>Legion Zone</h2><span class="tag">游戏助手</span></div></div>
+        <p class="app-desc">联想拯救者系列电脑的游戏性能控制中心。</p>
+        <div class="app-links"><a href="https://legionzone.lenovo.com.cn/" target="_blank">官网</a></div>
+      </div>
+      <div class="app-card">
+        <div class="app-header"><div class="app-icon"><img src="./icons/etalien.png" alt="ETAlien Booster"></div><div class="app-info"><h2>ETAlien Booster</h2><span class="tag">游戏加速</span></div></div>
+        <p class="app-desc">外星人电脑自带的游戏加速工具。</p>
+        <div class="app-links"><a href="https://www.et001.com/" target="_blank">官网</a></div>
       </div>
     </div>
 
+    <!-- ================= 类别五：设计与影音 ================= -->
+    <div class="category-title">🎨 设计与影音</div>
+    <div class="app-grid">
+      <div class="app-card">
+        <div class="app-header"><div class="app-icon"><img src="./icons/3dsmax.svg" alt="3dsMAX"></div><div class="app-info"><h2>3dsMAX</h2><span class="tag">3D 建模</span></div></div>
+        <p class="app-desc">专业的 3D 建模、动画和渲染软件。</p>
+        <div class="app-links"><a href="https://www.autodesk.com/products/3ds-max/" target="_blank">官网</a></div>
+      </div>
+      <div class="app-card">
+        <div class="app-header"><div class="app-icon"><img src="./icons/photoshop.svg" alt="Photoshop"></div><div class="app-info"><h2>Photoshop</h2><span class="tag">图像处理</span></div></div>
+        <p class="app-desc">Adobe 出品的行业标准图像处理软件。</p>
+        <div class="app-links"><a href="https://www.adobe.com/products/photoshop.html" target="_blank">官网</a></div>
+      </div>
+      <div class="app-card">
+        <div class="app-header"><div class="app-icon"><img src="./icons/acrobat.svg" alt="Acrobat DC"></div><div class="app-info"><h2>Acrobat DC</h2><span class="tag">PDF 工具</span></div></div>
+        <p class="app-desc">Adobe 官方的 PDF 阅读与编辑软件。</p>
+        <div class="app-links"><a href="https://www.adobe.com/acrobat.html" target="_blank">官网</a></div>
+      </div>
+      <div class="app-card">
+        <div class="app-header"><div class="app-icon"><img src="./icons/potplayer.png" alt="PotPlayer"></div><div class="app-info"><h2>PotPlayer</h2><span class="tag">视频播放</span></div></div>
+        <p class="app-desc">功能极其强大的本地视频播放器，支持格式众多。</p>
+        <div class="app-links"><a href="https://potplayer.daum.net/" target="_blank">官网</a></div>
+      </div>
+      <div class="app-card">
+        <div class="app-header"><div class="app-icon"><img src="./icons/capcut.svg" alt="CapCut"></div><div class="app-info"><h2>CapCut</h2><span class="tag">视频剪辑</span></div></div>
+        <p class="app-desc">剪映国际版，功能强大且素材丰富的视频剪辑工具。</p>
+        <div class="app-links"><a href="https://www.capcut.com/" target="_blank">官网</a></div>
+      </div>
+    </div>
+
+    <!-- ================= 类别六：日常与安全 ================= -->
+    <div class="category-title">🛡️ 日常与安全</div>
+    <div class="app-grid">
+      <div class="app-card">
+        <div class="app-header"><div class="app-icon"><img src="./icons/huorong.png" alt="Huorong"></div><div class="app-info"><h2>Huorong</h2><span class="tag">安全软件</span></div></div>
+        <p class="app-desc">火绒安全，纯净轻量的杀毒防护软件。</p>
+        <div class="app-links"><a href="https://www.huorong.cn/" target="_blank">官网</a></div>
+      </div>
+      <div class="app-card">
+        <div class="app-header"><div class="app-icon"><img src="./icons/ldplayer.png" alt="LDPlayer"></div><div class="app-info"><h2>LDPlayer</h2><span class="tag">安卓模拟器</span></div></div>
+        <p class="app-desc">雷电模拟器，在电脑上流畅运行安卓游戏和应用。</p>
+        <div class="app-links"><a href="https://www.ldplayer.net/" target="_blank">官网</a></div>
+      </div>
+      <div class="app-card">
+        <div class="app-header"><div class="app-icon"><img src="./icons/qq.png" alt="QQ"></div><div class="app-info"><h2>QQ</h2><span class="tag">社交</span></div></div>
+        <p class="app-desc">腾讯出品的国民级即时通讯软件。</p>
+        <div class="app-links"><a href="https://im.qq.com/" target="_blank">官网</a></div>
+      </div>
+      <div class="app-card">
+        <div class="app-header"><div class="app-icon"><img src="./icons/weixin.png" alt="Weixin"></div><div class="app-info"><h2>Weixin</h2><span class="tag">社交</span></div></div>
+        <p class="app-desc">微信电脑版，工作生活必备通讯工具。</p>
+        <div class="app-links"><a href="https://weixin.qq.com/" target="_blank">官网</a></div>
+      </div>
+      <div class="app-card">
+        <div class="app-header"><div class="app-icon"><img src="./icons/thunder.png" alt="Thunder"></div><div class="app-info"><h2>Thunder</h2><span class="tag">下载工具</span></div></div>
+        <p class="app-desc">迅雷，老牌的高速下载工具。</p>
+        <div class="app-links"><a href="https://www.xunlei.com/" target="_blank">官网</a></div>
+      </div>
+      <div class="app-card">
+        <div class="app-header"><div class="app-icon"><img src="./icons/quark.png" alt="QuarkCloudDrive"></div><div class="app-info"><h2>QuarkCloudDrive</h2><span class="tag">云盘</span></div></div>
+        <p class="app-desc">夸克网盘，阿里巴巴旗下的云存储服务。</p>
+        <div class="app-links"><a href="https://pan.quark.cn/" target="_blank">官网</a></div>
+      </div>
+      <div class="app-card">
+        <div class="app-header"><div class="app-icon"><img src="./icons/bitwarden.png" alt="BitWarden"></div><div class="app-info"><h2>BitWarden</h2><span class="tag">密码管理</span></div></div>
+        <p class="app-desc">开源免费且跨平台的密码管理器，强烈推荐。</p>
+        <div class="app-links"><a href="https://bitwarden.com/" target="_blank">官网</a></div>
+      </div>
+      <div class="app-card">
+        <div class="app-header"><div class="app-icon"><img src="./icons/msoffice.svg" alt="Microsoft Office"></div><div class="app-info"><h2>Microsoft Office</h2><span class="tag">办公套件</span></div></div>
+        <p class="app-desc">微软办公软件套装，包含 Word、Excel、PPT 等。</p>
+        <div class="app-links"><a href="https://www.office.com/" target="_blank">官网</a></div>
+      </div>
+    </div>
+
+    <!-- 返回链接 -->
     <a class="back-link" href="../index.html">← 返回首页</a>
   </div>
+
 </body>
 </html>
